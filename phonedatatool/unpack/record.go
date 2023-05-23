@@ -71,10 +71,10 @@ func NewRecordPart() *RecordPart {
 	}
 }
 
-func (rp *RecordPart) Bytes() []byte {
+func (rp *RecordPart) BytesPlainText() []byte {
 	w := bytes.NewBuffer(nil)
 	var idList RecordIDList
-	for k, _ := range rp.id2offset {
+	for k := range rp.id2offset {
 		idList = append(idList, k)
 	}
 	sort.Sort(idList)

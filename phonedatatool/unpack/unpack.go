@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/xluohome/phonedata/phonedatatool"
+	"github.com/xluohome/phonedata/phonedatatool/util"
 	"os"
 	"path"
 )
@@ -30,7 +31,7 @@ func (u *Unpacker) Unpack(phoneDataFilePath string, plainDirectoryPath string) e
 	recordFilePath := path.Join(plainDirectoryPath, RecordFileName)
 	indexFilePath := path.Join(plainDirectoryPath, IndexFileName)
 
-	if err := u.assureAllFileNotExist(versionFilePath, recordFilePath, indexFilePath); err != nil {
+	if err := util.AssureAllFileNotExist(versionFilePath, recordFilePath, indexFilePath); err != nil {
 		return err
 	}
 
@@ -44,38 +45,17 @@ func (u *Unpacker) Unpack(phoneDataFilePath string, plainDirectoryPath string) e
 	if res, err := u.parse(rawBuf); err != nil {
 		return fmt.Errorf("failed to parse raw file data: %v", err)
 	} else {
-		if err := os.WriteFile(versionFilePath, res.versionPart.Bytes(), 0); err != nil {
+		if err := os.WriteFile(versionFilePath, res.versionPart.BytesPlainText(), 0); err != nil {
 			return err
 		}
-		if err := os.WriteFile(recordFilePath, res.recordPart.Bytes(), 0); err != nil {
+		if err := os.WriteFile(recordFilePath, res.recordPart.BytesPlainText(), 0); err != nil {
 			return err
 		}
-		if err := os.WriteFile(indexFilePath, res.indexPart.Bytes(), 0); err != nil {
+		if err := os.WriteFile(indexFilePath, res.indexPart.BytesPlainText(), 0); err != nil {
 			return err
 		}
 		return nil
 	}
-}
-
-func (u *Unpacker) assureFileNotExist(path string) error {
-	if _, err := os.Stat(path); err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		} else {
-			return fmt.Errorf("check file existence %v failed: %v", path, err)
-		}
-	} else {
-		return fmt.Errorf("file %v already exists", path)
-	}
-}
-
-func (u *Unpacker) assureAllFileNotExist(paths ...string) error {
-	for _, p := range paths {
-		if err := u.assureFileNotExist(p); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 type ParseResult struct {

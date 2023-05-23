@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/xluohome/phonedata/phonedatatool/pack"
 	"github.com/xluohome/phonedata/phonedatatool/query"
 	"github.com/xluohome/phonedata/phonedatatool/unpack"
 )
@@ -64,7 +63,7 @@ func main() {
 			fmt.Println("ERROR! No destination")
 			return
 		}
-		if err := pack.NewPacker().Pack(*source, *destination); err != nil {
+		if err := unpack.NewPacker().Pack(*source, *destination); err != nil {
 			fmt.Println("ERROR! Pack failed.", err)
 			return
 		} else {

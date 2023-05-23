@@ -56,10 +56,10 @@ func NewIndexPart() *IndexPart {
 	}
 }
 
-func (ip *IndexPart) Bytes() []byte {
+func (ip *IndexPart) BytesPlainText() []byte {
 	w := bytes.NewBuffer(nil)
 	var prefixList PhoneNumberPrefixList
-	for k, _ := range ip.prefix2item {
+	for k := range ip.prefix2item {
 		prefixList = append(prefixList, k)
 	}
 	sort.Sort(prefixList)
