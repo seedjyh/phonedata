@@ -18,3 +18,7 @@ func (op *IndexPartOffsetPart) Parse(reader *bytes.Reader) error {
 	op.IndexPartOffset = RecordOffset(binary.LittleEndian.Uint32(buf))
 	return nil
 }
+
+func (op *IndexPartOffsetPart) EncodedLen() int64 {
+	return 4
+}

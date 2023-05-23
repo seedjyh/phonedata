@@ -40,3 +40,7 @@ func (vp *VersionPart) Parse(reader *bytes.Reader) error {
 	vp.Version = Version(buf)
 	return nil
 }
+
+func (vp *VersionPart) EncodedLen() int64 {
+	return 4
+}
